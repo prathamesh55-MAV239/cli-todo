@@ -1,4 +1,476 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* =============================================
+   TaskFlow — Smart Todo App Styles
+   ============================================= */
 
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+  min-height: 100vh;
+  color: #e2e8f0;
+  overflow-x: hidden;
+}
+
+/* ---- Animated background blobs ---- */
+body::before,
+body::after {
+  content: '';
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.15;
+  z-index: 0;
+  animation: float 20s ease-in-out infinite;
+}
+body::before {
+  width: 500px; height: 500px;
+  background: #7c3aed;
+  top: -100px; left: -100px;
+}
+body::after {
+  width: 400px; height: 400px;
+  background: #06b6d4;
+  bottom: -100px; right: -100px;
+  animation-delay: -10s;
+}
+
+@keyframes float {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(30px, -30px) scale(1.05); }
+  66% { transform: translate(-20px, 20px) scale(0.95); }
+}
+
+/* ---- App container ---- */
+.app {
+  position: relative;
+  z-index: 1;
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 40px 20px 60px;
+}
+
+/* ---- Header ---- */
+.header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+.header h1 {
+  font-size: 2.5rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, #a78bfa, #06b6d4);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: -1px;
+}
+.header p {
+  color: #94a3b8;
+  margin-top: 4px;
+  font-size: 0.95rem;
+}
+.task-stats {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  margin-top: 16px;
+}
+.stat {
+  text-align: center;
+}
+.stat-number {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #a78bfa;
+}
+.stat-label {
+  font-size: 0.75rem;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* ---- Add task form ---- */
+.add-form {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+.add-input {
+  flex: 1;
+  padding: 14px 18px;
+  border: 2px solid rgba(167, 139, 250, 0.2);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.05);
+  color: #e2e8f0;
+  font-size: 1rem;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+.add-input:focus {
+  border-color: #a78bfa;
+  box-shadow: 0 0 0 3px rgba(167, 139, 250, 0.15);
+}
+.add-input::placeholder {
+  color: #64748b;
+}
+.add-btn {
+  padding: 14px 24px;
+  border: none;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #7c3aed, #6d28d9);
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  white-space: nowrap;
+}
+.add-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 20px rgba(124, 58, 237, 0.4);
+}
+.add-btn:active {
+  transform: translateY(0);
+}
+
+/* ---- Priority & Due date row ---- */
+.options-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+.priority-select, .due-input {
+  padding: 10px 14px;
+  border: 2px solid rgba(167, 139, 250, 0.15);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  color: #e2e8f0;
+  font-size: 0.875rem;
+  font-family: inherit;
+  outline: none;
+  cursor: pointer;
+}
+.priority-select option {
+  background: #1e1b4b;
+  color: #e2e8f0;
+}
+.due-input::-webkit-calendar-picker-indicator {
+  filter: invert(0.7);
+}
+
+/* ---- Filter tabs ---- */
+.filters {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 20px;
+  background: rgba(255, 255, 255, 0.03);
+  padding: 4px;
+  border-radius: 12px;
+}
+.filter-btn {
+  flex: 1;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 10px;
+  background: transparent;
+  color: #94a3b8;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.filter-btn.active {
+  background: rgba(167, 139, 250, 0.15);
+  color: #a78bfa;
+}
+.filter-btn:hover:not(.active) {
+  color: #cbd5e1;
+}
+
+/* ---- Search ---- */
+.search-bar {
+  position: relative;
+  margin-bottom: 20px;
+}
+.search-icon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #64748b;
+  font-size: 1rem;
+}
+.search-input {
+  width: 100%;
+  padding: 12px 14px 12px 40px;
+  border: 2px solid rgba(167, 139, 250, 0.1);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.03);
+  color: #e2e8f0;
+  font-size: 0.9rem;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.3s;
+}
+.search-input:focus {
+  border-color: rgba(167, 139, 250, 0.3);
+}
+.search-input::placeholder {
+  color: #475569;
+}
+
+/* ---- Task list ---- */
+.task-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* ---- Task item ---- */
+.task-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 18px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 14px;
+  transition: all 0.3s;
+  animation: slideIn 0.3s ease-out;
+}
+.task-item:hover {
+  background: rgba(255, 255, 255, 0.07);
+  border-color: rgba(167, 139, 250, 0.15);
+  transform: translateX(4px);
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Custom checkbox */
+.checkbox {
+  width: 22px;
+  height: 22px;
+  border: 2px solid #475569;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s;
+  flex-shrink: 0;
+}
+.checkbox:hover {
+  border-color: #a78bfa;
+}
+.checkbox.checked {
+  background: linear-gradient(135deg, #7c3aed, #6d28d9);
+  border-color: #7c3aed;
+}
+.checkbox.checked::after {
+  content: '✓';
+  color: white;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+/* Task content */
+.task-content {
+  flex: 1;
+  min-width: 0;
+}
+.task-title {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #e2e8f0;
+  transition: all 0.3s;
+  word-break: break-word;
+}
+.task-title.done {
+  text-decoration: line-through;
+  color: #475569;
+}
+.task-meta {
+  display: flex;
+  gap: 10px;
+  margin-top: 4px;
+  font-size: 0.75rem;
+}
+.priority-badge {
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-size: 0.65rem;
+}
+.priority-high { background: rgba(239, 68, 68, 0.15); color: #f87171; }
+.priority-medium { background: rgba(251, 191, 36, 0.15); color: #fbbf24; }
+.priority-low { background: rgba(52, 211, 153, 0.15); color: #34d399; }
+.due-date {
+  color: #64748b;
+}
+.due-date.overdue {
+  color: #f87171;
+}
+
+/* Task actions */
+.task-actions {
+  display: flex;
+  gap: 6px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.task-item:hover .task-actions {
+  opacity: 1;
+}
+.action-btn {
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  transition: all 0.2s;
+}
+.edit-btn {
+  background: rgba(59, 130, 246, 0.1);
+  color: #60a5fa;
+}
+.edit-btn:hover {
+  background: rgba(59, 130, 246, 0.2);
+}
+.delete-btn {
+  background: rgba(239, 68, 68, 0.1);
+  color: #f87171;
+}
+.delete-btn:hover {
+  background: rgba(239, 68, 68, 0.2);
+}
+
+/* ---- Edit mode ---- */
+.edit-input {
+  flex: 1;
+  padding: 8px 12px;
+  border: 2px solid #a78bfa;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.05);
+  color: #e2e8f0;
+  font-size: 1rem;
+  font-family: inherit;
+  outline: none;
+}
+.save-btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  background: #22c55e;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+.cancel-btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  background: rgba(239, 68, 68, 0.15);
+  color: #f87171;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+/* ---- Empty state ---- */
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+}
+.empty-icon {
+  font-size: 4rem;
+  margin-bottom: 16px;
+  opacity: 0.4;
+}
+.empty-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #94a3b8;
+  margin-bottom: 8px;
+}
+.empty-text {
+  color: #64748b;
+  font-size: 0.9rem;
+}
+
+/* ---- Footer bar ---- */
+.footer-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+  padding: 12px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+.footer-text {
+  color: #64748b;
+  font-size: 0.8rem;
+}
+.clear-btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  background: rgba(239, 68, 68, 0.1);
+  color: #f87171;
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.clear-btn:hover {
+  background: rgba(239, 68, 68, 0.2);
+}
+
+/* ---- Toast notification ---- */
+.toast {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  padding: 12px 24px;
+  border-radius: 12px;
+  background: rgba(34, 197, 94, 0.9);
+  color: white;
+  font-weight: 500;
+  font-size: 0.9rem;
+  backdrop-filter: blur(10px);
+  transition: transform 0.4s ease;
+  z-index: 1000;
+}
+.toast.show {
+  transform: translateX(-50%) translateY(0);
+}
+.toast.error {
+  background: rgba(239, 68, 68, 0.9);
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 480px) {
+  .app { padding: 20px 16px 40px; }
+  .header h1 { font-size: 2rem; }
+  .add-form { flex-direction: column; }
+  .add-btn { text-align: center; }
+  .options-row { flex-direction: column; }
+  .task-actions { opacity: 1; }
+}
