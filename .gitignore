@@ -1,24 +1,8 @@
-# Python
-__pycache__/
-*.pyc
-*.pyd
-*.pyo
-*.pdb
-*.egg-info/
-
-# Virtual env
-venv/
-.env
-
-# Node
 node_modules/
 dist/
-build/
-
-# OS files
+.vite/
+__pycache__/
+*.pyc
+.env
+*.log
 .DS_Store
-Thumbs.db
-
-# IDE
-.idea/
-.vscode/
