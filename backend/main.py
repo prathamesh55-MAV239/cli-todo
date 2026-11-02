@@ -4,6 +4,12 @@ from .tasks import Task, load_tasks, save_tasks
 
 app = FastAPI()
 
+# Serve the React (or plain) frontend from the "frontend" directory relative to the repository root
+from fastapi.staticfiles import StaticFiles
+import os
+frontend_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "frontend"))
+app.mount("/", StaticFiles(directory=frontend_path, html=True), name="frontend")
+
 @app.get("/tasks", response_model=List[Task])
 def get_tasks():
     return load_tasks()
