@@ -1,14 +1,18 @@
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from typing import List
 from tasks import Task, load_tasks, save_tasks
 
 app = FastAPI()
 
-# Serve the React (or plain) frontend from the "frontend" directory relative to the repository root
-from fastapi.staticfiles import StaticFiles
-import os
-frontend_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "frontend"))
-app.mount("/", StaticFiles(directory=frontend_path, html=True), name="frontend")
+# Allow the Vite dev server (localhost:5173) to call this API
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:5173", "http://127.0.0.1:5173"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.get("/tasks", response_model=List[Task])
 def get_tasks():
