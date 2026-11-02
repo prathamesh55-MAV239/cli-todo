@@ -1,6 +1,6 @@
 from fastapi import FastAPI, HTTPException
 from typing import List
-from .tasks import Task, load_tasks, save_tasks
+from tasks import Task, load_tasks, save_tasks
 
 app = FastAPI()
 
