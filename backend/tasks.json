@@ -1,1 +1,10 @@
-[]
+[
+  {
+    "id": 1,
+    "title": "coding",
+    "done": false,
+    "priority": "medium",
+    "due_date": null,
+    "created_at": "2026-11-02T12:09:29.177Z"
+  }
+]
