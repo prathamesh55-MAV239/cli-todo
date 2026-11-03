@@ -134,11 +134,11 @@ function App() {
             <div className="stat-label">Total</div>
           </div>
           <div className="stat">
-            <div className="stat-number" style={{ color: "#38bdf8" }}>{pendingCount}</div>
+            <div className="stat-number">{pendingCount}</div>
             <div className="stat-label">Pending</div>
           </div>
           <div className="stat">
-            <div className="stat-number" style={{ color: "#4ade80" }}>{completedCount}</div>
+            <div className="stat-number">{completedCount}</div>
             <div className="stat-label">Done</div>
           </div>
         </div>

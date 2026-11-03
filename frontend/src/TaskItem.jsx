@@ -27,9 +27,9 @@ function TaskItem({ task, onToggle, onDelete, onEdit }) {
       : "priority-medium";
 
   return (
-    <li className="task-item">
+    <li className={`task-item ${task.done ? "completed" : ""}`}>
       {isEditing ? (
-        <div style={{ display: "flex", gap: "8px", width: "100%", alignItems: "center" }}>
+        <div className="edit-row">
           <input
             className="edit-input"
             value={editText}
@@ -42,10 +42,11 @@ function TaskItem({ task, onToggle, onDelete, onEdit }) {
         </div>
       ) : (
         <>
-          <div
+          <button
+            type="button"
             className={`checkbox ${task.done ? "checked" : ""}`}
             onClick={onToggle}
-            title={task.done ? "Mark as active" : "Mark as completed"}
+            aria-label={task.done ? "Mark as active" : "Mark as completed"}
           />
           <div className="task-content">
             <div className={`task-title ${task.done ? "done" : ""}`} onClick={onToggle} style={{ cursor: "pointer" }}>

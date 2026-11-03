@@ -10,7 +10,7 @@
 ![License: MIT](https://img.shields.io/badge/License-MIT-green.svg?style=for-the-badge)
 
 <p align="center">
-  <b>A sleek, lightning-fast full-stack task manager built with FastAPI, React 18, Vite, and custom glassmorphic styling.</b>
+  <b>A polished, responsive task manager built with FastAPI, React 18, and Vite.</b>
 </p>
 
 [✨ Live Features](#-key-features) • [🚀 Quick Start](#-quick-start) • [📡 API Documentation](#-api-endpoints) • [📁 Project Structure](#-project-structure)
@@ -21,14 +21,16 @@
 
 ## ✨ Key Features
 
-- **🎨 Modern Glassmorphic Dark UI**: Custom-crafted neon violet-cyan gradient theme with ambient animated backdrop glow.
+- **🎨 Natural, Colorful Interface**: Warm paper tones, leafy greens, and coral accents create a calm, clear workspace.
+- **📱 Responsive Task Cards**: Task cards adapt to mobile screens, with actions available on touch devices and subtle hover feedback on buttons.
+- **✅ Clear Completion States**: Completed tasks use a softer green surface and a checked control, while the title is visibly crossed out.
 - **⚡ Task Priorities**: Label tasks as 🟢 **Low**, 🟡 **Medium**, or 🔴 **High** priority with clear visual badges.
 - **📅 Due Dates & Timestamps**: Set target completion dates with calendar pickers and track task creation times down to the minute.
 - **✏️ Live Inline Editing**: Double-click or click the ✏️ icon on any task to edit the title on the fly (press `Enter` to save, `Esc` to cancel).
 - **🔍 Instant Live Search**: Filter and search through your tasks instantaneously as you type.
 - **🎯 Dynamic Filter Tabs**: Effortlessly switch views between **All**, **Active**, and **Completed** with live counter badges.
 - **📊 Real-time Dashboard Stats**: Live counters for total tasks, pending tasks, and completed items.
-- **🧹 One-Click Cleanup**: Quick **Clear Completed** button to archive or purge finished tasks cleanly.
+- **🧹 One-Click Cleanup**: Remove all completed tasks with the **Clear Completed** button.
 - **🔔 Interactive Toast Feedback**: Sleek slide-up toast notifications confirming all user actions.
 - **💾 Automatic JSON Persistence**: All changes automatically synchronize with `backend/tasks.json` in real time.
 
@@ -63,7 +65,7 @@
 |---|---|---|
 | **Frontend** | [React 18](https://react.dev/) | Component-driven declarative UI |
 | **Tooling** | [Vite 5](https://vitejs.dev/) | Next-generation fast frontend bundler |
-| **Styling** | Custom Modern CSS | Glassmorphism, CSS variables, Inter typography |
+| **Styling** | Custom CSS | Responsive layouts, accessible focus states, DM Sans and Fraunces typography |
 | **HTTP Client** | [Axios](https://axios-http.com/) | REST API requests & proxy routing |
 | **Backend** | [FastAPI](https://fastapi.tiangolo.com/) | High-performance Python async web framework |
 | **Server** | [Uvicorn](https://www.uvicorn.org/) | Lightning-fast ASGI web server |
@@ -77,7 +79,7 @@
 ### 1. Clone the repository
 ```bash
 git clone https://github.com/prathamesh55-MAV239/cli-todo.git
-cd cli-todo/todo-web
+cd cli-todo
 ```
 
 ### 2. Start the Backend (FastAPI)
@@ -90,13 +92,15 @@ python -m uvicorn main:app --host 127.0.0.1 --port 8000 --reload
 > Interactive OpenAPI documentation available at: `http://127.0.0.1:8000/docs`
 
 ### 3. Start the Frontend (React + Vite)
-Open a new terminal window:
+Open a second terminal at the repository root:
 ```bash
-cd todo-web/frontend
+cd frontend
 npm install
-npm run dev
+npm run dev -- --host 0.0.0.0
 ```
-> The web application will launch at: **`http://localhost:5173`**
+> Open **`http://localhost:5173`** in your browser. Do not open `frontend/index.html` directly: the Vite server loads the React app and proxies `/tasks` requests to the backend.
+
+Both servers must remain running while using the app. If task requests fail, confirm the backend is listening at `http://127.0.0.1:8000` and the frontend is running at `http://localhost:5173`.
 
 ---
 
@@ -117,25 +121,26 @@ FastAPI provides an automatic, interactive OpenAPI Swagger interface at `http://
 
 ```bash
 cli-todo/
-├── .gitignore
 ├── LICENSE
-└── todo-web/
-    ├── README.md                 # Project documentation
-    ├── backend/
-    │   ├── main.py               # FastAPI application & route declarations
-    │   ├── tasks.py              # Pydantic Task model & storage logic
-    │   ├── tasks.json            # Persistent JSON database
-    │   ├── requirements.txt      # Python dependencies
-    │   └── server.py             # Pure-Python fallback server
-    └── frontend/
-        ├── index.html            # Vite HTML5 entry point
-        ├── package.json          # Node dependencies & build scripts
-        ├── vite.config.js        # Vite dev server & API proxy configuration
-        └── src/
-            ├── main.jsx          # React DOM root mounting
-            ├── App.jsx           # Main TaskFlow dashboard & business logic
-            ├── TaskItem.jsx      # Individual task card component
-            └── index.css         # Custom modern design & animations
+├── README.md
+├── backend/
+│   ├── __init__.py
+│   ├── main.py                   # FastAPI application & route declarations
+│   ├── requirements.txt          # Python dependencies
+│   ├── server.py                 # Standard-library HTTP server
+│   ├── tasks.json                # Local task data
+│   └── tasks.py                  # Pydantic model & JSON persistence
+└── frontend/
+    ├── index.html                # Vite HTML entry point
+    ├── package.json              # React and Vite dependencies
+    ├── postcss.config.cjs
+    ├── tailwind.config.cjs
+    ├── vite.config.js            # Dev server and API proxy
+    └── src/
+        ├── main.jsx
+        ├── App.jsx               # Task dashboard and workflow
+        ├── TaskItem.jsx          # Task card and controls
+        └── index.css             # Responsive theme and component styles
 ```
 
 ---
